@@ -2,11 +2,35 @@
 -- Reference: Context7 Supabase docs (/supabase/supabase)
 -- This script is safe to run multiple times; it will not error if policies already exist.
 
--- Enable RLS (idempotent, safe to run multiple times)
-ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.posts ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.org_members ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.comments ENABLE ROW LEVEL SECURITY;
+-- Enable RLS if not already enabled
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_policy WHERE polrelid = 'public.profiles'::regclass) THEN
+    ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+  END IF;
+END
+$$ LANGUAGE plpgsql;
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_policy WHERE polrelid = 'public.posts'::regclass) THEN
+    ALTER TABLE public.posts ENABLE ROW LEVEL SECURITY;
+  END IF;
+END
+$$ LANGUAGE plpgsql;
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_policy WHERE polrelid = 'public.org_members'::regclass) THEN
+    ALTER TABLE public.org_members ENABLE ROW LEVEL SECURITY;
+  END IF;
+END
+$$ LANGUAGE plpgsql;
+DO $$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_policy WHERE polrelid = 'public.comments'::regclass) THEN
+    ALTER TABLE public.comments ENABLE ROW LEVEL SECURITY;
+  END IF;
+END
+$$ LANGUAGE plpgsql;
 
 -- Create policies only if they do not exist
 DO $$
