@@ -33,14 +33,21 @@ DO $$ BEGIN
   END IF;
 END $$;
 
+-- Posts: Authors can update and delete their posts (split policies)
 DO $$ BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_policy WHERE polname = 'Authors can modify their posts' AND polrelid = 'public.posts'::regclass) THEN
-    CREATE POLICY "Authors can modify their posts" ON public.posts
-      FOR UPDATE, DELETE TO authenticated
+  IF NOT EXISTS (SELECT 1 FROM pg_policy WHERE polname = 'Authors can update their posts' AND polrelid = 'public.posts'::regclass) THEN
+    CREATE POLICY "Authors can update their posts" ON public.posts
+      FOR UPDATE TO authenticated
       USING ((select auth.uid()) = author_id);
   END IF;
 END $$;
-
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_policy WHERE polname = 'Authors can delete their posts' AND polrelid = 'public.posts'::regclass) THEN
+    CREATE POLICY "Authors can delete their posts" ON public.posts
+      FOR DELETE TO authenticated
+      USING ((select auth.uid()) = author_id);
+  END IF;
+END $$;
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_policy WHERE polname = 'All authenticated can read posts' AND polrelid = 'public.posts'::regclass) THEN
     CREATE POLICY "All authenticated can read posts" ON public.posts
@@ -57,14 +64,21 @@ DO $$ BEGIN
   END IF;
 END $$;
 
+-- Comments: Authors can update and delete their comments (split policies)
 DO $$ BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_policy WHERE polname = 'Authors can modify their comments' AND polrelid = 'public.comments'::regclass) THEN
-    CREATE POLICY "Authors can modify their comments" ON public.comments
-      FOR UPDATE, DELETE TO authenticated
+  IF NOT EXISTS (SELECT 1 FROM pg_policy WHERE polname = 'Authors can update their comments' AND polrelid = 'public.comments'::regclass) THEN
+    CREATE POLICY "Authors can update their comments" ON public.comments
+      FOR UPDATE TO authenticated
       USING ((select auth.uid()) = author_id);
   END IF;
 END $$;
-
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_policy WHERE polname = 'Authors can delete their comments' AND polrelid = 'public.comments'::regclass) THEN
+    CREATE POLICY "Authors can delete their comments" ON public.comments
+      FOR DELETE TO authenticated
+      USING ((select auth.uid()) = author_id);
+  END IF;
+END $$;
 DO $$ BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_policy WHERE polname = 'All authenticated can read comments' AND polrelid = 'public.comments'::regclass) THEN
     CREATE POLICY "All authenticated can read comments" ON public.comments
