@@ -1,0 +1,25 @@
+{
+  "models": {
+    "main": {
+      "provider": "openai",
+      "modelId": "gpt-4o"
+    },
+    "research": {
+      "provider": "perplexity",
+      "modelId": "sonar-pro"
+    },
+    "fallback": {
+      "provider": "anthropic",
+      "modelId": "claude-3-sonnet-20240229"
+    }
+  },
+  "global": {
+    "logLevel": "info",
+    "debug": false,
+    "defaultSubtasks": 5,
+    "defaultPriority": "medium",
+    "projectName": "Taskmaster",
+    "ollamaBaseUrl": "http://localhost:11434/api",
+    "azureOpenaiBaseUrl": "https://your-endpoint.openai.azure.com/"
+  }
+}

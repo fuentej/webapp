@@ -1,0 +1,71 @@
+---
+description: Guidelines for creating and maintaining Roo Code rules to ensure consistency and effectiveness.
+globs: .roo/rules/*.md
+alwaysApply: true
+---
+- **Always Use Context7 MCP for Code and Documentation**
+  - All code suggestions, implementations, and refactors must be based on up-to-date documentation and code snippets fetched from Context7 MCP.
+  - Before writing or editing code, fetch and reference the relevant Context7 snippet or doc.
+  - If a Context7 snippet is unavailable, log this in the implementation plan and seek clarification or alternatives.
+  - Example:
+    ```typescript
+    // ✅ DO: Fetch and reference Context7 doc before implementing a new API route
+    // Reference: [Context7 Next.js API Routing](mdc:context7:vercel/nextjs#api-routes)
+    export default function handler(req, res) {
+      // ...implementation
+    }
+    
+    // ❌ DON'T: Write or refactor code without referencing Context7 documentation
+    export default function handler(req, res) {
+      // ...implementation
+    }
+    ```
+  - Cross-reference this rule in all project and workflow rules ([dev_workflow.md](mdc:.roo/rules/dev_workflow.md)).
+
+- **Required Rule Structure:**
+  ```markdown
+  ---
+  description: Clear, one-line description of what the rule enforces
+  globs: path/to/files/*.ext, other/path/**/*
+  alwaysApply: boolean
+  ---
+
+  - **Main Points in Bold**
+    - Sub-points with details
+    - Examples and explanations
+  ```
+
+- **File References:**
+  - Use `[filename](mdc:path/to/file)` ([filename](mdc:filename)) to reference files
+  - Example: [prisma.md](mdc:.roo/rules/prisma.md) for rule references
+  - Example: [schema.prisma](mdc:prisma/schema.prisma) for code references
+
+- **Code Examples:**
+  - Use language-specific code blocks
+  ```typescript
+  // ✅ DO: Show good examples
+  const goodExample = true;
+  
+  // ❌ DON'T: Show anti-patterns
+  const badExample = false;
+  ```
+
+- **Rule Content Guidelines:**
+  - Start with high-level overview
+  - Include specific, actionable requirements
+  - Show examples of correct implementation
+  - Reference existing code when possible
+  - Keep rules DRY by referencing other rules
+
+- **Rule Maintenance:**
+  - Update rules when new patterns emerge
+  - Add examples from actual codebase
+  - Remove outdated patterns
+  - Cross-reference related rules
+
+- **Best Practices:**
+  - Use bullet points for clarity
+  - Keep descriptions concise
+  - Include both DO and DON'T examples
+  - Reference actual code over theoretical examples
+  - Use consistent formatting across rules 
