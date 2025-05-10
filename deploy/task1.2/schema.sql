@@ -1,8 +1,9 @@
--- schema.sql: Core tables and relationships for Task 1.2
+-- schema.sql: Idempotent core tables and relationships for Task 1.2
 -- Reference: Context7 Supabase docs (/supabase/supabase)
+-- This script is safe to run multiple times; it will not error if tables already exist.
 
 -- Profiles table
-create table public.profiles (
+create table if not exists public.profiles (
   id uuid references auth.users(id) primary key,
   username text unique not null,
   full_name text,
@@ -12,7 +13,7 @@ create table public.profiles (
 );
 
 -- Organizations table
-create table public.organizations (
+create table if not exists public.organizations (
   id bigint primary key generated always as identity,
   name text not null,
   slug text unique not null,
@@ -22,7 +23,7 @@ create table public.organizations (
 );
 
 -- Organization members table
-create table public.org_members (
+create table if not exists public.org_members (
   org_id bigint references public.organizations(id) on delete cascade,
   user_id uuid references auth.users(id) on delete cascade,
   role text not null check (role in ('owner', 'admin', 'editor', 'viewer')),
@@ -31,7 +32,7 @@ create table public.org_members (
 );
 
 -- Posts table
-create table public.posts (
+create table if not exists public.posts (
   id bigint primary key generated always as identity,
   title text not null,
   content text not null,
@@ -48,7 +49,7 @@ create table public.posts (
 );
 
 -- Comments table
-create table public.comments (
+create table if not exists public.comments (
   id bigint primary key generated always as identity,
   post_id bigint references public.posts(id) on delete cascade,
   author_id uuid references public.profiles(id),
